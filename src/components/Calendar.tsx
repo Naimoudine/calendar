@@ -6,6 +6,7 @@ import {
   startOfMonth,
 } from "date-fns";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface CalendarProps {
   currentMonth: number;
@@ -36,16 +37,20 @@ export default function Calendar({
   }, [currentMonth]);
 
   return (
-    <div className="grid grid-cols-7 grid-rows-auto gap-2 mt-2">
+    <motion.div className="grid grid-cols-7 gap-2 mt-2 overflow-hidden auto-raws-max">
       {interval?.map((date, i) => (
         <div
-          className={`justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-800/30 flex justify-center items-center`}
+          className={
+            date.getMonth() === currentMonth
+              ? `justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-800/30 flex justify-center items-center`
+              : `justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-900 flex justify-center items-center`
+          }
           key={i}
           style={{ gridColumnStart: `${date.getDay() + 1}` }}
         >
           {date.getDate()}
         </div>
       ))}
-    </div>
+    </motion.div>
   );
 }

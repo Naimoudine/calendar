@@ -39,12 +39,13 @@ function App() {
   useEffect(() => {}, []);
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center">
+    <div className="flex flex-col items-center justify-center w-screen h-screen">
       <div className="max-w-[600px]">
         <Header
           currentMonth={currentMonth}
           setCurrentMonth={setCurrentMonth}
           currentYear={currentYear}
+          setCurrentYear={setCurrentYear}
           months={months}
         />
         <div className="mt-4">

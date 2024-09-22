@@ -1,10 +1,12 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import type React from "react";
+import { motion } from "framer-motion";
 
 interface HeaderProps {
   currentMonth: number;
   setCurrentMonth: React.Dispatch<React.SetStateAction<number>>;
   currentYear: number;
+  setCurrentYear: React.Dispatch<React.SetStateAction<number>>;
   months: string[];
 }
 
@@ -12,18 +14,23 @@ export default function Header({
   currentMonth,
   setCurrentMonth,
   currentYear,
+  setCurrentYear,
   months,
 }: HeaderProps) {
   const addMonth = () => {
-    if (currentMonth) {
-      setCurrentMonth((old) => old + 1);
+    if (currentMonth === 11) {
+      setCurrentMonth(-1);
+      setCurrentYear((old) => old + 1);
     }
+    setCurrentMonth((old) => old + 1);
   };
 
   const subMonth = () => {
-    if (currentMonth > 0) {
-      setCurrentMonth((old) => old - 1);
+    if (currentMonth === 0) {
+      setCurrentMonth(12);
+      setCurrentYear((old) => old - 1);
     }
+    setCurrentMonth((old) => old - 1);
   };
 
   return (
@@ -34,19 +41,19 @@ export default function Header({
           aria-label="change month"
           onClick={() => subMonth()}
         >
-          <ChevronLeftIcon className="size-4 text-white" />
+          <ChevronLeftIcon className="text-white size-4" />
         </button>
         <button
           type="button"
           aria-label=" change month"
           onClick={() => addMonth()}
         >
-          <ChevronRightIcon className="size-4 text-white" />
+          <ChevronRightIcon className="text-white size-4" />
         </button>
       </div>
-      <h1 className="text-3xl font-semibold">
+      <h1 className="text-3xl font-semibold text-white">
         {months.find((month) => months.indexOf(month) === currentMonth)}{" "}
-        <span className="font-light">{currentYear}</span>
+        <span className="font-light text-white/30">{currentYear}</span>
       </h1>
     </div>
   );
