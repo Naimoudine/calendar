@@ -1,0 +1,12 @@
+@tailwind base;
+@layer base {
+  body {
+    @apply bg-zinc-900 h-screen w-screen;
+  }
+
+  #root {
+    @apply h-full w-full;
+  }
+}
+@tailwind components;
+@tailwind utilities;
