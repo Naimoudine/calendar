@@ -41,14 +41,14 @@ export default function Header({
           aria-label="change month"
           onClick={() => subMonth()}
         >
-          <ChevronLeftIcon className="text-white size-4" />
+          <ChevronLeftIcon className="text-white size-6" />
         </button>
         <button
           type="button"
           aria-label=" change month"
           onClick={() => addMonth()}
         >
-          <ChevronRightIcon className="text-white size-4" />
+          <ChevronRightIcon className="text-white size-6" />
         </button>
       </div>
       <h1 className="text-3xl font-semibold text-white">

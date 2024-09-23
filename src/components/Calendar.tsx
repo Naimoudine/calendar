@@ -37,19 +37,20 @@ export default function Calendar({
   }, [currentMonth]);
 
   return (
-    <motion.div className="grid grid-cols-7 gap-2 mt-2 overflow-hidden auto-raws-max">
+    <motion.div className="grid grid-cols-7 gap-2 mt-2 overflow-hidden">
       {interval?.map((date, i) => (
-        <div
+        <button
+          type="button"
           className={
             date.getMonth() === currentMonth
-              ? `justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-800/30 flex justify-center items-center`
-              : `justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-900 flex justify-center items-center`
+              ? `justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-800/30 flex flex-col justify-end items-center`
+              : `justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-900 flex flex-col justify-end items-center`
           }
           key={i}
           style={{ gridColumnStart: `${date.getDay() + 1}` }}
         >
-          {date.getDate()}
-        </div>
+          <p>{date.getDate()}</p>
+        </button>
       ))}
     </motion.div>
   );

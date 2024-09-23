@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import DaysList from "./components/DaysList";
 import Calendar from "./components/Calendar";
+import Modal from "./components/Modal";
 
 const months: string[] = [
   "January",
@@ -39,7 +40,8 @@ function App() {
   useEffect(() => {}, []);
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
+    <div className="relative flex flex-col items-center justify-center w-screen h-screen">
+      <Modal />
       <div className="max-w-[600px]">
         <Header
           currentMonth={currentMonth}

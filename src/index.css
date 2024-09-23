@@ -1,11 +1,20 @@
 @tailwind base;
 @layer base {
   body {
-    @apply bg-zinc-900 h-screen w-screen;
+    @apply w-screen h-screen bg-zinc-900;
   }
 
   #root {
-    @apply h-full w-full;
+    @apply w-full h-full;
+  }
+
+  input,
+  select {
+    @apply p-2 bg-transparent border-2 rounded-lg border-zinc-700;
+  }
+
+  form button {
+    @apply px-4 py-2 border-2 rounded-lg border-zinc-700;
   }
 }
 @tailwind components;
