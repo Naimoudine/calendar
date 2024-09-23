@@ -1,6 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import type React from "react";
-import { motion } from "framer-motion";
 
 interface HeaderProps {
   currentMonth: number;

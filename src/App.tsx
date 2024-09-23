@@ -4,6 +4,12 @@ import DaysList from "./components/DaysList";
 import Calendar from "./components/Calendar";
 import Modal from "./components/Modal";
 
+export interface Subscription {
+  date: Date;
+  company: string;
+  price: number;
+}
+
 const months: string[] = [
   "January",
   "February",
@@ -36,12 +42,22 @@ function App() {
   const [currentYear, setCurrentYear] = useState<number>(
     new Date().getFullYear()
   );
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(subscriptions);
+  }, [subscriptions]);
 
   return (
     <div className="relative flex flex-col items-center justify-center w-screen h-screen">
-      <Modal />
+      <Modal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        setSubscriptions={setSubscriptions}
+        selectedDate={selectedDate}
+      />
       <div className="max-w-[600px]">
         <Header
           currentMonth={currentMonth}
@@ -56,6 +72,10 @@ function App() {
             currentMonth={currentMonth}
             currentYear={currentYear}
             days={days}
+            isModalOpen={isModalOpen}
+            subscriptions={subscriptions}
+            setIsModalOpen={setIsModalOpen}
+            setSelectedDate={setSelectedDate}
           />
         </div>
       </div>
