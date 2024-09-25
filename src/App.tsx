@@ -10,6 +10,11 @@ export interface Subscription {
   price: number;
 }
 
+export interface Bill {
+  sum: number;
+  month: number;
+}
+
 const months: string[] = [
   "January",
   "February",
@@ -47,6 +52,12 @@ function App() {
   const [selectedDate, setSelectedDate] = useState<string>(
     new Date().toISOString()
   );
+  const [bill, setBill] = useState<Bill[]>([
+    {
+      sum: 0,
+      month: currentMonth,
+    },
+  ]);
 
   useEffect(() => {
     if (subscriptions.length > 0) {
@@ -54,9 +65,9 @@ function App() {
     }
   }, [subscriptions]);
 
-  useEffect(() => {
-    console.log(subscriptions);
-  }, [subscriptions]);
+  // useEffect(() => {
+  //   console.log(bill);
+  // }, [subscriptions]);
 
   return (
     <div className="relative flex flex-col items-center justify-center w-screen h-screen">
@@ -74,6 +85,7 @@ function App() {
           currentYear={currentYear}
           setCurrentYear={setCurrentYear}
           months={months}
+          bill={bill}
         />
         <div className="mt-4">
           <DaysList days={days} />
@@ -83,9 +95,11 @@ function App() {
             days={days}
             isModalOpen={isModalOpen}
             subscriptions={subscriptions}
+            bill={bill}
             setSubscriptions={setSubscriptions}
             setIsModalOpen={setIsModalOpen}
             setSelectedDate={setSelectedDate}
+            setBill={setBill}
           />
         </div>
       </div>

@@ -11,6 +11,7 @@ import { Subscription } from "../App";
 import netflix from "../assets/images/netflix.svg";
 import openai from "../assets/images/openai.svg";
 import prime from "../assets/images/prime.svg";
+import type { Bill } from "../App";
 
 interface CalendarProps {
   currentMonth: number;
@@ -18,9 +19,11 @@ interface CalendarProps {
   days: string[];
   isModalOpen: boolean;
   subscriptions: Subscription[];
+  bill: Bill[];
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
   setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
+  setBill: React.Dispatch<React.SetStateAction<Bill[]>>;
 }
 
 export default function Calendar({
@@ -29,9 +32,11 @@ export default function Calendar({
   currentYear,
   isModalOpen,
   subscriptions,
+  bill,
   setIsModalOpen,
   setSelectedDate,
   setSubscriptions,
+  setBill,
 }: CalendarProps) {
   const [interval, setInterval] = useState<Date[]>();
 
@@ -56,6 +61,31 @@ export default function Calendar({
       setSubscriptions(JSON.parse(savedSubscriptions));
     }
   }, [currentMonth]);
+
+  useEffect(() => {
+    setBill((oldBills) => {
+      // Créer une copie du tableau original pour éviter les mutations
+      const newBills = [...oldBills];
+
+      // Trouver la facture du mois en cours
+      const currBillIndex = newBills.findIndex((b) => b.month === currentMonth);
+
+      if (currBillIndex !== -1) {
+        // Créer une copie de l'objet facture pour éviter les mutations directes
+        const updatedBill = { ...newBills[currBillIndex] };
+        updatedBill.sum = 0;
+        // Ajouter le prix des abonnements à la facture
+        for (let sub of subscriptions) {
+          updatedBill.sum += sub.price;
+        }
+
+        // Remplacer l'ancienne facture par la nouvelle dans le tableau
+        newBills[currBillIndex] = updatedBill;
+      }
+      // Retourner la nouvelle version des factures
+      return newBills;
+    });
+  }, [interval, currentMonth, subscriptions]);
 
   const handleSub = (date: Date) => {
     setIsModalOpen(!isModalOpen);
