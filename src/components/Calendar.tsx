@@ -19,7 +19,8 @@ interface CalendarProps {
   isModalOpen: boolean;
   subscriptions: Subscription[];
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+  setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+  setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
 }
 
 export default function Calendar({
@@ -30,6 +31,7 @@ export default function Calendar({
   subscriptions,
   setIsModalOpen,
   setSelectedDate,
+  setSubscriptions,
 }: CalendarProps) {
   const [interval, setInterval] = useState<Date[]>();
 
@@ -46,11 +48,18 @@ export default function Calendar({
         ),
       })
     );
+  }, [currentMonth, currentYear, subscriptions]);
+
+  useEffect(() => {
+    const savedSubscriptions = localStorage.getItem("subscriptions");
+    if (savedSubscriptions) {
+      setSubscriptions(JSON.parse(savedSubscriptions));
+    }
   }, [currentMonth]);
 
   const handleSub = (date: Date) => {
     setIsModalOpen(!isModalOpen);
-    setSelectedDate(date);
+    setSelectedDate(date.toISOString());
   };
 
   const displayImg = (img: string) => {
@@ -78,8 +87,8 @@ export default function Calendar({
           onClick={() => handleSub(date)}
         >
           {subscriptions
-            .filter((subscription) => subscription.date === date)
-            .map((subscription) => (
+            ?.filter((subscription) => subscription.date === date.toISOString())
+            ?.map((subscription) => (
               <img
                 className="w-6 h-6"
                 key={subscription.company}

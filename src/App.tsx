@@ -5,7 +5,7 @@ import Calendar from "./components/Calendar";
 import Modal from "./components/Modal";
 
 export interface Subscription {
-  date: Date;
+  date: string;
   company: string;
   price: number;
 }
@@ -44,7 +44,15 @@ function App() {
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<string>(
+    new Date().toISOString()
+  );
+
+  useEffect(() => {
+    if (subscriptions.length > 0) {
+      localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
+    }
+  }, [subscriptions]);
 
   useEffect(() => {
     console.log(subscriptions);
@@ -55,6 +63,7 @@ function App() {
       <Modal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        subscriptions={subscriptions}
         setSubscriptions={setSubscriptions}
         selectedDate={selectedDate}
       />
@@ -74,6 +83,7 @@ function App() {
             days={days}
             isModalOpen={isModalOpen}
             subscriptions={subscriptions}
+            setSubscriptions={setSubscriptions}
             setIsModalOpen={setIsModalOpen}
             setSelectedDate={setSelectedDate}
           />

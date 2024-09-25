@@ -4,7 +4,8 @@ import { Subscription } from "../App";
 
 type ModalProps = {
   isModalOpen: boolean;
-  selectedDate: Date;
+  selectedDate: string;
+  subscriptions: Subscription[];
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
 };
@@ -12,6 +13,7 @@ type ModalProps = {
 export default function Modal({
   isModalOpen,
   selectedDate,
+  subscriptions,
   setIsModalOpen,
   setSubscriptions,
 }: ModalProps) {
@@ -24,7 +26,11 @@ export default function Modal({
 
     setSubscriptions((prev) => [
       ...prev,
-      { date: selectedDate, company: String(company), price: Number(price) },
+      {
+        date: selectedDate,
+        company: String(company),
+        price: Number(price),
+      },
     ]);
 
     setIsModalOpen(!isModalOpen);
