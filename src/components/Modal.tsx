@@ -5,7 +5,6 @@ import { Subscription } from "../App";
 type ModalProps = {
   isModalOpen: boolean;
   selectedDate: string;
-  subscriptions: Subscription[];
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
 };
@@ -13,7 +12,6 @@ type ModalProps = {
 export default function Modal({
   isModalOpen,
   selectedDate,
-  subscriptions,
   setIsModalOpen,
   setSubscriptions,
 }: ModalProps) {
@@ -33,6 +31,7 @@ export default function Modal({
       },
     ]);
 
+    form.reset();
     setIsModalOpen(!isModalOpen);
   };
 
