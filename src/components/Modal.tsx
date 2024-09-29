@@ -1,6 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import type React from "react";
 import { Subscription } from "../App";
+import { useState } from "react";
 
 type ModalProps = {
   isModalOpen: boolean;
@@ -15,6 +16,10 @@ export default function Modal({
   setIsModalOpen,
   setSubscriptions,
 }: ModalProps) {
+  const [showError, setShowError] = useState<boolean>(false);
+
+  const regex = /^\d+(\.\d+)?$/;
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -22,17 +27,22 @@ export default function Modal({
     const price = formData.get("price");
     const company = formData.get("company");
 
-    setSubscriptions((prev) => [
-      ...prev,
-      {
-        date: selectedDate,
-        company: String(company),
-        price: Number(price),
-      },
-    ]);
+    if (price && regex.test(price as string)) {
+      setSubscriptions((prev) => [
+        ...prev,
+        {
+          date: selectedDate,
+          company: String(company),
+          price: Number(price),
+        },
+      ]);
 
-    form.reset();
-    setIsModalOpen(!isModalOpen);
+      form.reset();
+      setIsModalOpen(!isModalOpen);
+      setShowError(false);
+    } else {
+      setShowError(true);
+    }
   };
 
   return (
@@ -58,6 +68,13 @@ export default function Modal({
         <label className="flex flex-col gap-2" htmlFor="price">
           price*
           <input type="text" name="price" id="price" required />
+          <p
+            className={
+              showError ? "block text-sm font-semibold text-red-600" : "hidden"
+            }
+          >
+            Please, enter only numbers.
+          </p>
         </label>
         <label className="flex flex-col gap-2" htmlFor="company">
           company*
