@@ -76,7 +76,10 @@ export default function Calendar({
         updatedBill.sum = 0;
         // Ajouter le prix des abonnements à la facture
         for (let sub of subscriptions) {
-          updatedBill.sum += sub.price;
+          const subMonth = new Date(sub.date).getMonth();
+          if (subMonth === updatedBill.month) {
+            updatedBill.sum += sub.price;
+          }
         }
 
         // Remplacer l'ancienne facture par la nouvelle dans le tableau

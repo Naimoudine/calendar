@@ -13,6 +13,7 @@ export interface Subscription {
 export interface Bill {
   sum: number;
   month: number;
+  year: number;
 }
 
 const months: string[] = [
@@ -56,6 +57,7 @@ function App() {
     {
       sum: 0,
       month: currentMonth,
+      year: currentYear,
     },
   ]);
 
@@ -65,9 +67,10 @@ function App() {
     }
   }, [subscriptions]);
 
-  // useEffect(() => {
-  //   console.log(bill);
-  // }, [subscriptions]);
+  useEffect(() => {
+    console.log(subscriptions);
+    console.log();
+  }, [bill]);
 
   return (
     <div className="relative flex flex-col items-center justify-center w-screen h-screen">
@@ -86,6 +89,7 @@ function App() {
           setCurrentYear={setCurrentYear}
           months={months}
           bill={bill}
+          setBill={setBill}
         />
         <div className="mt-4">
           <DaysList days={days} />

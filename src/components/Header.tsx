@@ -10,6 +10,7 @@ interface HeaderProps {
   setCurrentYear: React.Dispatch<React.SetStateAction<number>>;
   months: string[];
   bill: Bill[];
+  setBill: React.Dispatch<React.SetStateAction<Bill[]>>;
 }
 
 export default function Header({
@@ -19,6 +20,7 @@ export default function Header({
   setCurrentYear,
   months,
   bill,
+  setBill,
 }: HeaderProps) {
   const [currentSum, setCurrentSum] = useState<number>(0);
 
@@ -42,8 +44,27 @@ export default function Header({
     const curr = bill.find((el) => el.month === currentMonth);
     if (curr) {
       setCurrentSum(Number(curr.sum.toFixed(2)));
+    } else {
+      setCurrentSum(0);
     }
   }, [currentMonth, bill]);
+
+  useEffect(() => {
+    const billExists = bill.some(
+      (el) => el.month === currentMonth && el.year === currentYear
+    );
+
+    if (!billExists) {
+      setBill((old) => [
+        ...old,
+        {
+          sum: 0,
+          month: currentMonth,
+          year: currentYear,
+        },
+      ]);
+    }
+  }, [currentMonth, currentYear, bill]);
 
   return (
     <div className="flex items-center justify-between gap-4">
