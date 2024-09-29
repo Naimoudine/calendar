@@ -67,17 +67,11 @@ function App() {
     }
   }, [subscriptions]);
 
-  useEffect(() => {
-    console.log(subscriptions);
-    console.log();
-  }, [bill]);
-
   return (
     <div className="relative flex flex-col items-center justify-center w-screen h-screen">
       <Modal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        subscriptions={subscriptions}
         setSubscriptions={setSubscriptions}
         selectedDate={selectedDate}
       />
