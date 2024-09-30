@@ -90,10 +90,8 @@ function App() {
           <Calendar
             currentMonth={currentMonth}
             currentYear={currentYear}
-            days={days}
             isModalOpen={isModalOpen}
             subscriptions={subscriptions}
-            bill={bill}
             setSubscriptions={setSubscriptions}
             setIsModalOpen={setIsModalOpen}
             setSelectedDate={setSelectedDate}
