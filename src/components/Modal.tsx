@@ -49,7 +49,7 @@ export default function Modal({
     <div
       className={
         isModalOpen
-          ? "absolute top-0 left-0 flex items-center justify-center w-screen h-screen bg-black/70"
+          ? "absolute top-0 left-0 flex items-center justify-center w-screen h-screen bg-black/70 z-[1000]"
           : "hidden"
       }
     >
