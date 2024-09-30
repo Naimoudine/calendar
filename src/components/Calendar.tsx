@@ -12,14 +12,23 @@ import netflix from "../assets/images/netflix.svg";
 import openai from "../assets/images/openai.svg";
 import prime from "../assets/images/prime.svg";
 import type { Bill } from "../App";
+import HoverModal from "./HoverModal";
+
+export const displayImg = (img: string) => {
+  if (img === "netflix") {
+    return netflix;
+  } else if (img === "openai") {
+    return openai;
+  } else if (img === "prime") {
+    return prime;
+  }
+};
 
 interface CalendarProps {
   currentMonth: number;
   currentYear: number;
-  days: string[];
   isModalOpen: boolean;
   subscriptions: Subscription[];
-  bill: Bill[];
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
   setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
@@ -28,17 +37,16 @@ interface CalendarProps {
 
 export default function Calendar({
   currentMonth,
-  days,
   currentYear,
   isModalOpen,
   subscriptions,
-  bill,
   setIsModalOpen,
   setSelectedDate,
   setSubscriptions,
   setBill,
 }: CalendarProps) {
   const [interval, setInterval] = useState<Date[]>();
+  const [hoverIndex, setHoverIndex] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     setInterval(
@@ -95,18 +103,14 @@ export default function Calendar({
     setSelectedDate(date.toISOString());
   };
 
-  const displayImg = (img: string) => {
-    if (img === "netflix") {
-      return netflix;
-    } else if (img === "openai") {
-      return openai;
-    } else if (img === "prime") {
-      return prime;
+  const handleHover = (subscription: Subscription) => {
+    if (subscription) {
+      setHoverIndex(subscriptions.indexOf(subscription));
     }
   };
 
   return (
-    <motion.div className="grid grid-cols-7 gap-2 mt-2 overflow-hidden" layout>
+    <motion.div className="grid grid-cols-7 gap-2 mt-2" layout>
       {interval?.map((date, i) => (
         <button
           type="button"
@@ -122,12 +126,23 @@ export default function Calendar({
           {subscriptions
             ?.filter((subscription) => subscription.date === date.toISOString())
             ?.map((subscription) => (
-              <img
-                className="w-6 h-6"
+              <div
+                className="relative"
                 key={subscription.company}
-                src={displayImg(subscription.company)}
-                alt={subscription.company}
-              />
+                onMouseEnter={() => handleHover(subscription)}
+                onMouseLeave={() => setHoverIndex(undefined)}
+              >
+                <img
+                  className="w-6 h-6"
+                  src={displayImg(subscription.company)}
+                  alt={subscription.company}
+                />
+                <HoverModal
+                  subscription={subscription}
+                  id={subscriptions.indexOf(subscription)}
+                  hoverIndex={hoverIndex}
+                />
+              </div>
             ))}
           <p>{date.getDate()}</p>
         </button>
