@@ -2,6 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import type React from "react";
 import { Bill } from "../App";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface HeaderProps {
   currentMonth: number;
@@ -85,12 +86,57 @@ export default function Header({
             <ChevronRightIcon className="text-white size-6" />
           </button>
         </div>
-        <h1 className="text-3xl font-semibold text-white">
+        <motion.h1
+          key={currentMonth}
+          className="text-3xl font-semibold text-white"
+          variants={headerVariants}
+          animate={"show"}
+          initial="hide"
+        >
           {months.find((month) => months.indexOf(month) === currentMonth)}{" "}
           <span className="font-light text-white/30">{currentYear}</span>
-        </h1>
+        </motion.h1>
       </div>
-      <p className="text-xl text-white">{currentSum} €</p>
+      <motion.p
+        key={currentMonth}
+        className="text-xl text-white"
+        initial="hide"
+        animate="show"
+        transition={{ staggerChildren: 0.5, duration: 0.6 }}
+      >
+        {String(currentSum)
+          .split("")
+          .map((char, i) => (
+            <motion.span key={i} variants={defaultAnimation}>
+              {char}
+            </motion.span>
+          ))}{" "}
+        €
+      </motion.p>
     </div>
   );
 }
+
+const headerVariants = {
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      ease: "easeOut",
+      duration: 0.3,
+    },
+  },
+  hide: {
+    y: -20,
+    opacity: 0,
+  },
+};
+
+const defaultAnimation = {
+  show: {
+    opacity: 1,
+  },
+  hide: {
+    opacity: 0,
+  },
+};

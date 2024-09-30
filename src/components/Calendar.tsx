@@ -106,7 +106,7 @@ export default function Calendar({
   };
 
   return (
-    <motion.div className="grid grid-cols-7 gap-2 mt-2 overflow-hidden">
+    <motion.div className="grid grid-cols-7 gap-2 mt-2 overflow-hidden" layout>
       {interval?.map((date, i) => (
         <button
           type="button"
