@@ -103,9 +103,9 @@ export default function Calendar({
     setSelectedDate(date.toISOString());
   };
 
-  const handleHover = (subscription: Subscription) => {
-    if (subscription) {
-      setHoverIndex(subscriptions.indexOf(subscription));
+  const handleHover = (index: number) => {
+    if (index) {
+      setHoverIndex(index);
     }
   };
 
@@ -116,34 +116,33 @@ export default function Calendar({
           type="button"
           className={
             date.getMonth() === currentMonth
-              ? `justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-800/30 flex flex-col justify-end items-center`
-              : `justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-900 flex flex-col justify-end items-center`
+              ? `relative justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-800/30 flex flex-col justify-end items-center`
+              : `relative justify-self-center w-full min-h-14 rounded-xl text-zinc-400 bg-zinc-900 flex flex-col justify-end items-center`
           }
           key={i}
           style={{ gridColumnStart: `${date.getDay() + 1}` }}
           onClick={() => handleSub(date)}
+          onMouseEnter={() => handleHover(i)}
+          onMouseLeave={() => setHoverIndex(undefined)}
         >
-          {subscriptions
-            ?.filter((subscription) => subscription.date === date.toISOString())
-            ?.map((subscription) => (
-              <div
-                className="relative"
-                key={subscription.company}
-                onMouseEnter={() => handleHover(subscription)}
-                onMouseLeave={() => setHoverIndex(undefined)}
-              >
+          <HoverModal
+            date={date}
+            subscriptions={subscriptions}
+            id={i}
+            hoverIndex={hoverIndex}
+          />
+          <div className="flex flex-row">
+            {subscriptions
+              ?.filter((s) => s.date === date.toISOString())
+              ?.map((subscription) => (
                 <img
-                  className="w-6 h-6"
+                  key={subscription.company}
+                  className="w-4 h-4"
                   src={displayImg(subscription.company)}
                   alt={subscription.company}
                 />
-                <HoverModal
-                  subscription={subscription}
-                  id={subscriptions.indexOf(subscription)}
-                  hoverIndex={hoverIndex}
-                />
-              </div>
-            ))}
+              ))}
+          </div>
           <p>{date.getDate()}</p>
         </button>
       ))}
